@@ -22,18 +22,15 @@ jobs:
 
       - name: Install
         run: |
-          cd module-open
           yarn cache clean
           yarn install --network-timeout 1000000
 
       - name: Build
-        run: |
-          cd module-open
-          yarn build
+        run: yarn build
 
       - name: Compress
         run: |
-          cd module-open/dist
+          cd ./dist
           npx bestzip ../module-open.zip ./*
 
       - name: Upload
@@ -43,5 +40,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           host: ${{ secrets.FTP_HOST }}
           port: ${{ secrets.FTP_PORT }}
-          src: ./module-open/module-open.zip
+          src: ./module-open.zip
           dest: ./builds/${{ github.sha }}/modules/module-open.zip
