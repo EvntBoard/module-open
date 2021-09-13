@@ -6,7 +6,7 @@ on:
     tags:
       - "v*.*.*"
 
-jopen:
+jobs:
   module-open:
     runs-on: ubuntu-latest
 
