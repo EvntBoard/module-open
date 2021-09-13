@@ -1,11 +1,12 @@
 name: Module Open
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*.*.*"
 
-jobs:
+jopen:
   module-open:
     runs-on: ubuntu-latest
 
@@ -16,17 +17,54 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
+
+      - name: Install wine
+        run: sudo apt install wine wine64
 
       - name: Build
         run: |
           yarn
-          yarn build
+          yarn build:x64
+          copy node_modules/open/xdg-open ./build/linux-x64/open/xdg-open
+          copy node_modules/open/xdg-open ./build/win-x64/open/xdg-open
+          copy node_modules/open/xdg-open ./build/macos-x64/open/xdg-open
 
-      - name: Pack
+      - name: Artefact Macos x64
+        uses: actions/upload-artifact@v2
+        with:
+          name: Open MacOS x64
+          path: ./build/macos-x64
+
+      - name: Artefact Linux x64
+        uses: actions/upload-artifact@v2
+        with:
+          name: Open Linux x64
+          path: ./build/linux-x64
+
+      - name: Artefact Win x64
+        uses: actions/upload-artifact@v2
+        with:
+          name: Open Windows x64
+          path: ./build/win-x64
+
+      - name: Pack Linux x64
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
-          cd dist
-          npx bestzip ../module-open.zip .
+          cd build/linux-x64
+          npx bestzip ../../open-linux-x64.zip .
+
+      - name: Pack Win x64
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cd build/win-x64
+          npx bestzip ../../open-win-x64.zip .
+
+      - name: Pack MacOS x64
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cd build/macos-x64
+          npx bestzip ../../open-macos-x64.zip .
 
       - name: Release
         uses: softprops/action-gh-release@v1
