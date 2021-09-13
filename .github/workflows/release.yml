@@ -26,9 +26,9 @@ jobs:
         run: |
           yarn
           yarn build:x64
-          copy node_modules/open/xdg-open ./build/linux-x64/open/xdg-open
-          copy node_modules/open/xdg-open ./build/win-x64/open/xdg-open
-          copy node_modules/open/xdg-open ./build/macos-x64/open/xdg-open
+          cp node_modules/open/xdg-open ./build/linux-x64/open/xdg-open
+          cp node_modules/open/xdg-open ./build/win-x64/open/xdg-open
+          cp node_modules/open/xdg-open ./build/macos-x64/open/xdg-open
 
       - name: Artefact Macos x64
         uses: actions/upload-artifact@v2
