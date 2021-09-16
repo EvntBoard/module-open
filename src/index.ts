@@ -1,19 +1,13 @@
-require("dotenv").config();
-import { EvntComNode } from "evntcom-js/dist/node";
-import open from "open";
+import { ConfigLoader } from "./ConfigLoader";
+import { OpenConnexion } from "./OpenConnexion";
 
-const NAME: string = process.env.EVNTBOARD_NAME || "open";
-const HOST: string = process.env.EVNTBOARD_HOST || "localhost";
-const PORT: number = process.env.EVNTBOARD_PORT
-  ? parseInt(process.env.EVNTBOARD_PORT)
-  : 5001;
+const main = async () => {
+  const configLoader = new ConfigLoader();
+  await configLoader.load();
 
-const evntCom = new EvntComNode({
-  name: NAME,
-  port: PORT,
-  host: HOST,
-});
+  const conf = configLoader.getConfig();
 
-evntCom.expose("open", async (target: string, options?: {}) => {
-  return open(target, options);
-});
+  new OpenConnexion(conf.host, conf.port, conf.name || "open");
+};
+
+main();
