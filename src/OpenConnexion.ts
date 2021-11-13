@@ -13,16 +13,18 @@ export class OpenConnexion {
       host: evntBoardHost,
     });
 
-    this.evntCom.onOpen = async () => {
+    this.evntCom.on('open', async () => {
       await this.evntCom.notify("newEvent", [
         "open-load",
         null,
         { emitter: this.name },
       ]);
-    };
+    });
 
     this.evntCom.expose("open", async (target: string, options?: {}) => {
       return open(target, options);
     });
+
+    this.evntCom.connect();
   }
 }
