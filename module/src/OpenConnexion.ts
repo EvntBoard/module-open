@@ -1,19 +1,19 @@
-import { EvntComNode } from "evntcom-js/dist/node";
+import { EvntCom } from "evntcom-js";
 import open from "open";
 
 export class OpenConnexion {
   private name: string;
-  private evntCom: EvntComNode;
+  private evntCom: EvntCom;
 
   constructor(evntBoardHost: string, evntBoardPort: number, name: string) {
     this.name = name;
-    this.evntCom = new EvntComNode({
+    this.evntCom = new EvntCom({
       name,
       port: evntBoardPort,
       host: evntBoardHost,
     });
 
-    this.evntCom.on('open', async () => {
+    this.evntCom.on("open", async () => {
       await this.evntCom.notify("newEvent", [
         "open-load",
         null,
