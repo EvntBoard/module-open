@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/EvntBoard/module-open#readme",
   "dependencies": {
-    "evntcom-js": "https://github.com/EvntBoard/evntcom-js.git",
+    "@evntboard/evntcom-node": "https://github.com/EvntBoard/evntcom-node.git",
     "open": "^8.4.0"
   },
   "devDependencies": {

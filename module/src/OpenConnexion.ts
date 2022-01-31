@@ -1,4 +1,4 @@
-import { EvntCom } from "evntcom-js";
+import { EvntCom } from "@evntboard/evntcom-node";
 import open from "open";
 
 export class OpenConnexion {
