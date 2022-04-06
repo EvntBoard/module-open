@@ -1,0 +1,9 @@
+dist
+node_modules
+package
+pkg-cache
+build
+.env
+config.json
+logs
+.DS_Store
