@@ -27,12 +27,12 @@ const build_win64 = async () => {
     "requested-execution-level": "asInvoker",
     "version-string": {
       CompanyName: "EvntBoard.io", //  "Node.js"
-      ProductName: "Module Twitch", // "Node.js"
-      FileDescription: "Twitch for EvntBoard", //  "Node.js: Server-side JavaScript"
+      ProductName: "EvntBoard: Module Open", // "Node.js"
+      FileDescription: "EvntBoard: Module Open", //  "Node.js: Server-side JavaScript"
       FileVersion: version, // NODE_EXE_VERSION
       ProductVersion: version, // NODE_EXE_VERSION
-      OriginalFilename: "module-twitch.exe", // "node.exe"
-      InternalName: "module-twitch", // "node"
+      OriginalFilename: "module-open.exe", // "node.exe"
+      InternalName: "module-open", // "node"
       LegalCopyright: "Copyright EvntBoard.io", //  "Copyright Node.js contributors. MIT license."
     },
     icon: "./assets/favicon.ico",
