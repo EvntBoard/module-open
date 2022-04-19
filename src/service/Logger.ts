@@ -8,7 +8,7 @@ import { ConfigService } from "./Config";
 
 const getCurrentData = () => {
   const currentDate = new Date();
-  return `module-twitch-${process.pid}-${(currentDate.getMonth() + 1)
+  return `module-open-${process.pid}-${(currentDate.getMonth() + 1)
     .toString()
     .padStart(2, "0")}-${currentDate
     .getDate()
