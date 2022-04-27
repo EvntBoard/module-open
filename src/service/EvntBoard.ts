@@ -45,8 +45,9 @@ export class EvntBoardService {
       this.loggerService.info(`Connected`);
       this.attempts = 0;
 
-      await this.rpc.request("module.register", {
-        name: this.configService.name,
+      await this.rpc.notify('session.register', {
+        name: 'module-open',
+        module: this.configService.name
       });
 
       await this.rpc.request("event.new", {
