@@ -1,4 +1,4 @@
-name: Module Twitch
+name: Release
 
 on:
   workflow_dispatch:
@@ -8,7 +8,11 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Check out Git repository
@@ -22,16 +26,6 @@ jobs:
       - id: get_version
         uses: battila7/get-version-action@v2
 
-      - name: Install wine
-        shell: bash
-        run: |
-          sudo dpkg --add-architecture i386
-          wget -nc https://dl.winehq.org/wine-builds/winehq.key
-          sudo apt-key add winehq.key
-          sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
-          sudo apt update
-          sudo apt install --install-recommends winehq-stable
-
       - name: Build
         shell: bash
         run: |
@@ -39,26 +33,29 @@ jobs:
           yarn build
 
       - name: Build & Pack Linux x64
+        if: startsWith(matrix.os, 'ubuntu')
         shell: bash
         run: |
           yarn build:x64:linux
-          mv ./build/linux-x64/module-twitch ./build/linux-x64/${{ github.event.repository.name }}-linux-x64-${{ steps.get_version.outputs.version }}
+          mv ./build/linux-x64/${{ github.event.repository.name }} ./build/linux-x64/${{ github.event.repository.name }}-linux-x64-${{ steps.get_version.outputs.version }}
           cd ./build/linux-x64/
           npx bestzip ../${{ github.event.repository.name }}-linux-x64-${{ steps.get_version.outputs.version }}.zip .
 
       - name: Build & Pack Win x64
+        if: startsWith(matrix.os, 'windows')
         shell: bash
         run: |
           yarn build:x64:win
-          mv ./build/win-x64/module-twitch.exe ./build/win-x64/${{ github.event.repository.name }}-win-x64-${{ steps.get_version.outputs.version }}.exe
+          mv ./build/win-x64/${{ github.event.repository.name }}.exe ./build/win-x64/${{ github.event.repository.name }}-win-x64-${{ steps.get_version.outputs.version }}.exe
           cd ./build/win-x64/
           npx bestzip ../${{ github.event.repository.name }}-win-x64-${{ steps.get_version.outputs.version }}.zip .
 
       - name: Build & Pack Macos x64
+        if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
           yarn build:x64:macos
-          mv ./build/macos-x64/module-twitch ./build/macos-x64/${{ github.event.repository.name }}-macos-x64-${{ steps.get_version.outputs.version }}
+          mv ./build/macos-x64/${{ github.event.repository.name }} ./build/macos-x64/${{ github.event.repository.name }}-macos-x64-${{ steps.get_version.outputs.version }}
           cd ./build/macos-x64/
           npx bestzip ../${{ github.event.repository.name }}-macos-x64-${{ steps.get_version.outputs.version }}.zip .
 
@@ -71,6 +68,7 @@ jobs:
             ./build/*.zip
 
       - name: Artifact Linux x64
+        if: startsWith(matrix.os, 'ubuntu')
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}-linux-x64-${{ steps.get_version.outputs.version }}
@@ -78,6 +76,7 @@ jobs:
           retention-days: 1
 
       - name: Artifact Win x64
+        if: startsWith(matrix.os, 'windows')
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}-win-x64-${{ steps.get_version.outputs.version }}
@@ -85,6 +84,7 @@ jobs:
           retention-days: 1
 
       - name: Artifact Macos x64
+        if: startsWith(matrix.os, 'macos')
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}-macos-x64-${{ steps.get_version.outputs.version }}

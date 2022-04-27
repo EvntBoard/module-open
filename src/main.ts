@@ -12,7 +12,7 @@ const main = async () => {
   const evntBoardService = getInstance(EvntBoardService);
 
   loggerService.info(
-    `Starting EvntBoard module twitch with name "${configService.name}"`
+    `Starting EvntBoard module open with name "${configService.name}"`
   );
 
   await evntBoardService.load();

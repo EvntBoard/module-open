@@ -1,5 +1,5 @@
 {
-  "name": "module-twitch",
+  "name": "module-open",
   "version": "1.0.0",
   "description": "",
   "main": "dist/main.js",
@@ -56,7 +56,8 @@
     ],
     "assets": [
       "node_modules/es-get-iterator/**/*",
-      "node_modules/iterate-value/**/*"
+      "node_modules/iterate-value/**/*",
+      "node_modules/open/xdg-open"
     ]
   }
 }
